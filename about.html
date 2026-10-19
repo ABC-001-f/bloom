@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#f5f3fb">
+<title>Case Study · BloomOS</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌸</text></svg>">
+<script>
+  /* Apply saved theme/accent/text size before first paint (no flash), and flag the preloader. */
+  window.__bloomStart = performance.now();
+  (function () {
+    var r = document.documentElement;
+    r.classList.add('preloading');
+    try {
+      var s = (JSON.parse(localStorage.getItem('bloomos:v2') || '{}').settings) || {};
+      var t = s.theme || 'light';
+      if (t === 'system') t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      r.dataset.theme = t;
+      if (s.accent) r.dataset.accent = s.accent;
+      if (s.textSize) r.dataset.text = s.textSize;
+      if (s.reduceMotion) r.classList.add('reduce-motion');
+      if (sessionStorage.getItem('bloomos:seen')) r.classList.add('pl-quick');
+    } catch (e) { r.dataset.theme = 'light'; }
+  })();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" media="print" onload="this.media='all'">
+<link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/webfonts/fa-solid-900.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/webfonts/fa-brands-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
+<link rel="stylesheet" href="assets/styles/style.css">
+<style>
+  /* Preloader — inline so it paints before anything else */
+  html.preloading { overflow: hidden; }
+  .preloader {
+    position: fixed; inset: 0; z-index: 9999; display: grid; place-items: center;
+    background: var(--bg, #f5f3fb); background-image: var(--ambient);
+    transition: opacity .5s ease, visibility .5s;
+    animation: plFailsafe .4s 6s forwards; /* if JS never runs, still reveal the page */
+  }
+  .preloader.pl-done { opacity: 0; visibility: hidden; }
+  .pl-inner { display: grid; justify-items: center; gap: 14px; color: var(--text, #1c1838); font-family: Inter, system-ui, sans-serif; }
+  .pl-lotus { width: 128px; height: 128px; overflow: visible; filter: drop-shadow(0 8px 22px rgba(var(--accent-rgb, 124, 77, 255), .4)); }
+  .pl-lotus .pp { transform-box: view-box; transform-origin: 50px 74px; animation: plBloom .9s cubic-bezier(.22, 1, .36, 1) both; }
+  .pl-lotus .pp1 { animation-delay: .05s; } .pl-lotus .pp2 { animation-delay: .15s; } .pl-lotus .pp3 { animation-delay: .3s; } .pl-lotus .pp4 { animation-delay: .4s; } .pl-lotus .pp5 { animation-delay: .55s; }
+  .pl-lotus .pl-core { transform-box: view-box; transform-origin: 50px 72px; animation: plBloom .6s .8s cubic-bezier(.22, 1, .36, 1) both; }
+  .pl-ring { fill: none; stroke: var(--accent, #7c4dff); stroke-opacity: .55; transform-box: view-box; transform-origin: 50px 82px; animation: plRipple 1.8s ease-out infinite; }
+  .pl-ring.r2 { animation-delay: .9s; }
+  .pl-word { font-weight: 800; font-size: 1.6rem; letter-spacing: -.6px; }
+  .pl-word span { color: var(--accent, #7c4dff); }
+  .pl-bar { width: 160px; height: 4px; border-radius: 4px; background: rgba(var(--accent-rgb, 124, 77, 255), .15); overflow: hidden; }
+  .pl-bar span { display: block; height: 100%; width: 40%; border-radius: 4px; background: linear-gradient(90deg, var(--accent, #7c4dff), var(--accent-2, #e04fd6)); animation: plSlide 1.1s ease-in-out infinite; }
+  .pl-msg { margin: 0; font-size: .8125rem; color: var(--faint, #6b6988); }
+  html.pl-quick .pl-bar, html.pl-quick .pl-msg { display: none; }
+  html.pl-quick .pl-lotus .pp, html.pl-quick .pl-lotus .pl-core { animation: none; }
+  html.pl-quick .preloader { transition-duration: .25s; }
+  @keyframes plBloom { from { transform: scale(0); opacity: 0; } }
+  @keyframes plRipple { from { transform: scale(.3); opacity: .9; } to { transform: scale(1.5); opacity: 0; } }
+  @keyframes plSlide { from { transform: translateX(-100%); } to { transform: translateX(260%); } }
+  @keyframes plFailsafe { to { opacity: 0; visibility: hidden; } }
+  @media (prefers-reduced-motion: reduce) { .pl-lotus .pp, .pl-lotus .pl-core, .pl-ring, .pl-bar span { animation: none; } }
+</style>
+</head>
+<body data-page="about">
+<div class="preloader" id="preloader" role="status" aria-label="Loading BloomOS">
+  <div class="pl-inner">
+    <svg class="pl-lotus" viewBox="0 0 100 100" aria-hidden="true">
+      <defs><linearGradient id="plPetal" x1="0" y1="0" x2="0" y2="1"><stop offset="0" style="stop-color:#fbf8ff"/><stop offset=".55" style="stop-color:var(--accent,#7c4dff)"/><stop offset="1" style="stop-color:var(--accent-3,#12a8d8)"/></linearGradient></defs>
+      <ellipse class="pl-ring" cx="50" cy="82" rx="42" ry="9"/>
+      <ellipse class="pl-ring r2" cx="50" cy="82" rx="42" ry="9"/>
+      <g transform="rotate(-58 50 74) translate(50 74) scale(.78) translate(-50 -74)"><path class="pp pp1" d="M50 16 C 63 33, 63 58, 50 74 C 37 58, 37 33, 50 16Z" fill="url(#plPetal)" stroke="#fff" stroke-opacity=".7"/></g>
+      <g transform="rotate(58 50 74) translate(50 74) scale(.78) translate(-50 -74)"><path class="pp pp2" d="M50 16 C 63 33, 63 58, 50 74 C 37 58, 37 33, 50 16Z" fill="url(#plPetal)" stroke="#fff" stroke-opacity=".7"/></g>
+      <g transform="rotate(-30 50 74) translate(50 74) scale(.92) translate(-50 -74)"><path class="pp pp3" d="M50 16 C 63 33, 63 58, 50 74 C 37 58, 37 33, 50 16Z" fill="url(#plPetal)" stroke="#fff" stroke-opacity=".7"/></g>
+      <g transform="rotate(30 50 74) translate(50 74) scale(.92) translate(-50 -74)"><path class="pp pp4" d="M50 16 C 63 33, 63 58, 50 74 C 37 58, 37 33, 50 16Z" fill="url(#plPetal)" stroke="#fff" stroke-opacity=".7"/></g>
+      <path class="pp pp5" d="M50 16 C 63 33, 63 58, 50 74 C 37 58, 37 33, 50 16Z" fill="url(#plPetal)" stroke="#fff" stroke-opacity=".7"/>
+      <ellipse class="pl-core" cx="50" cy="72" rx="7" ry="6" fill="#ffe3a3"/>
+    </svg>
+    <div class="pl-word">Bloom<span>OS</span></div>
+    <div class="pl-bar" aria-hidden="true"><span></span></div>
+    <p class="pl-msg">Growing your garden…</p>
+  </div>
+</div>
+<a class="skip-link" href="#page">Skip to content</a>
+<div class="ambient" aria-hidden="true"></div><canvas id="water" aria-hidden="true"></canvas>
+<div class="layout">
+  <aside class="sidebar" id="sidebar" aria-label="Main navigation"></aside>
+  <main>
+    <header class="topbar" id="topbar"></header>
+    <div id="page" tabindex="-1">
+
+      <section class="page-head">
+        <div>
+          <div class="eyebrow">Case study</div>
+          <h1>Why <span class="grad-text">BloomOS</span> exists</h1>
+          <p class="subtitle">A learning dashboard that turns invisible progress into a living garden — designed to help people keep going, gently.</p>
+        </div>
+        <div class="chips">
+          <button class="btn btn-primary" id="aboutTour" type="button"><i class="fas fa-route"></i> Take the tour</button>
+          <a class="btn" href="index.html"><i class="fas fa-seedling"></i> Open my garden</a>
+        </div>
+      </section>
+
+      <section class="cs-hero" aria-label="The problem">
+        <article class="panel">
+          <div class="eyebrow">The problem</div>
+          <h2 style="font-size:1.375rem">Online learners start strong, then quietly drift away.</h2>
+          <p class="subtitle">It's rarely a lack of motivation on day one. Progress is invisible, a missed day feels like failure, and most learning dashboards look like spreadsheets. So people stop opening them.</p>
+        </article>
+        <article class="panel" aria-label="Key statistic">
+          <div class="big-stat grad-text">~3%</div>
+          <p class="subtitle" style="font-size:.875rem">of learners who enrolled in MIT and Harvard courses on edX in 2017–18 went on to complete them.</p>
+          <small style="color:var(--faint);font-size:.75rem">Reich &amp; Ruipérez-Valiente, “The MOOC pivot”, <i>Science</i>, 2019.</small>
+        </article>
+      </section>
+
+      <h2 class="section-label">Who it's for</h2>
+      <section class="panel persona" aria-label="Persona">
+        <div class="avatar" style="--c1:#ff9e44;--c2:#f14dbb" aria-hidden="true">A</div>
+        <div>
+          <h3>Ada, 20 — second-year computer science student <span class="status-tag" style="margin-left:6px">Illustrative persona</span></h3>
+          <p class="subtitle" style="font-size:.875rem;margin-top:4px">Takes online courses alongside her degree to learn Python and design. Has six half-finished courses.</p>
+          <ul>
+            <li><b>Wants</b> to see that 20 minutes a day is actually adding up to something.</li>
+            <li><b>Struggles</b> with guilt after missing a few days, which makes it harder to come back.</li>
+            <li><b>Needs</b> one clear next step, not a wall of options, and a little encouragement from people like her.</li>
+          </ul>
+        </div>
+      </section>
+
+      <h2 class="section-label">Design principles</h2>
+      <section class="cs-grid" aria-label="Design principles">
+        <article class="cs-card"><div class="cs-ico"><i class="fas fa-spa"></i></div><h3>Make progress visible</h3><p>Every skill is a plant. Each lesson visibly grows it — from seed, to sprout, to full bloom — so effort never disappears into a percentage.</p></article>
+        <article class="cs-card"><div class="cs-ico"><i class="fas fa-hand-holding-heart"></i></div><h3>Gentle, not guilt</h3><p>Neglected skills get “thirsty”, not red error states. Your streak survives until the day actually ends. Coming back is always one tap away.</p></article>
+        <article class="cs-card"><div class="cs-ico"><i class="fas fa-shoe-prints"></i></div><h3>One small step</h3><p>“Continue” always opens exactly one lesson: a tip, a three-item checklist and an optional 10-minute focus timer.</p></article>
+        <article class="cs-card"><div class="cs-ico"><i class="fas fa-sliders"></i></div><h3>You're in control</h3><p>Pick your own daily goal, track goals automatically or by hand, and export or reset your data whenever you like.</p></article>
+        <article class="cs-card"><div class="cs-ico"><i class="fas fa-feather"></i></div><h3>Calm by default</h3><p>A soft light theme, a dark theme for night owls, and motion that can be turned off entirely.</p></article>
+        <article class="cs-card"><div class="cs-ico"><i class="fas fa-users"></i></div><h3>Grow together</h3><p>The Greenhouse community gives weekly prompts, cheers and a friendly leaderboard — accountability without pressure.</p></article>
+      </section>
+
+      <h2 class="section-label">The core flow</h2>
+      <ol class="flow" aria-label="User flow">
+        <li><strong>Plant</strong>Onboarding asks only three things: your name, what to grow, and a daily goal.</li>
+        <li><strong>Orient</strong>Home shows today's watering goal and exactly one next lesson.</li>
+        <li><strong>Learn</strong>A focused lesson card with a checklist and optional focus timer.</li>
+        <li><strong>Grow</strong>The plant grows, the streak ticks up, and petals fall when you hit your goal.</li>
+        <li><strong>Reflect</strong>Goals, badges and the community turn progress into momentum.</li>
+      </ol>
+
+      <h2 class="section-label">Accessibility &amp; inclusion</h2>
+      <section class="panel" aria-label="Accessibility features">
+        <ul class="a11y-list">
+          <li><i class="fas fa-circle-check"></i><span><b>Light, dark &amp; system themes</b>, each with its own contrast-checked text colours.</span></li>
+          <li><i class="fas fa-circle-check"></i><span><b>Text size control</b> — the whole UI is rem-based, so it also respects browser font settings.</span></li>
+          <li><i class="fas fa-circle-check"></i><span><b>Reduce motion</b> toggle, and the OS “reduce motion” preference is honoured automatically.</span></li>
+          <li><i class="fas fa-circle-check"></i><span><b>Fully keyboard-operable</b>: skip link, <kbd>/</kbd> to search, arrow keys in results and option groups, focus kept inside dialogs.</span></li>
+          <li><i class="fas fa-circle-check"></i><span><b>Never colour alone</b>: plant health, goal status and badges always pair colour with an icon and a label.</span></li>
+          <li><i class="fas fa-circle-check"></i><span><b>Screen-reader friendly</b>: labelled landmarks, progress bars with values, live regions for notifications.</span></li>
+          <li><i class="fas fa-circle-check"></i><span><b>No surprise destruction</b>: deletes and resets confirm inline, right where you clicked.</span></li>
+          <li><i class="fas fa-circle-check"></i><span><b>Works everywhere</b>: from small phones (bottom navigation dock) to wide desktops, plus Windows high-contrast mode.</span></li>
+        </ul>
+      </section>
+
+      <h2 class="section-label">How it's built</h2>
+      <section class="cs-grid" aria-label="Technology">
+        <article class="cs-card"><div class="cs-ico"><i class="fab fa-html5"></i></div><h3>Zero frameworks</h3><p>Hand-written HTML, CSS and JavaScript. No build step — open <code>index.html</code> and it runs.</p></article>
+        <article class="cs-card"><div class="cs-ico"><i class="fas fa-lock"></i></div><h3>Private by design</h3><p>Everything is stored in your own browser. Nothing is sent to a server; export a backup any time.</p></article>
+        <article class="cs-card"><div class="cs-ico"><i class="fas fa-swatchbook"></i></div><h3>One token system</h3><p>Every colour is a design token, so themes and accent colours change the whole product consistently.</p></article>
+      </section>
+
+      <footer class="bottom-note"><span>✧ BloomOS · Your mind, made visible.</span><span>Learn deeply. Grow gently. Achieve boldly.</span></footer>
+    </div>
+  </main>
+</div>
+<script src="assets/js/main.js"></script>
+</body>
+</html>

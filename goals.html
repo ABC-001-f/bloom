@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#f5f3fb">
+<title>Goals · BloomOS</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌸</text></svg>">
+<script>
+  /* Apply saved theme/accent/text size before first paint (no flash), and flag the preloader. */
+  window.__bloomStart = performance.now();
+  (function () {
+    var r = document.documentElement;
+    r.classList.add('preloading');
+    try {
+      var s = (JSON.parse(localStorage.getItem('bloomos:v2') || '{}').settings) || {};
+      var t = s.theme || 'light';
+      if (t === 'system') t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      r.dataset.theme = t;
+      if (s.accent) r.dataset.accent = s.accent;
+      if (s.textSize) r.dataset.text = s.textSize;
+      if (s.reduceMotion) r.classList.add('reduce-motion');
+      if (sessionStorage.getItem('bloomos:seen')) r.classList.add('pl-quick');
+    } catch (e) { r.dataset.theme = 'light'; }
+  })();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" media="print" onload="this.media='all'">
+<link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/webfonts/fa-solid-900.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/webfonts/fa-brands-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
+<link rel="stylesheet" href="assets/styles/style.css">
+<style>
+  /* Preloader — inline so it paints before anything else */
+  html.preloading { overflow: hidden; }
+  .preloader {
+    position: fixed; inset: 0; z-index: 9999; display: grid; place-items: center;
+    background: var(--bg, #f5f3fb); background-image: var(--ambient);
+    transition: opacity .5s ease, visibility .5s;
+    animation: plFailsafe .4s 6s forwards; /* if JS never runs, still reveal the page */
+  }
+  .preloader.pl-done { opacity: 0; visibility: hidden; }
+  .pl-inner { display: grid; justify-items: center; gap: 14px; color: var(--text, #1c1838); font-family: Inter, system-ui, sans-serif; }
+  .pl-lotus { width: 128px; height: 128px; overflow: visible; filter: drop-shadow(0 8px 22px rgba(var(--accent-rgb, 124, 77, 255), .4)); }
+  .pl-lotus .pp { transform-box: view-box; transform-origin: 50px 74px; animation: plBloom .9s cubic-bezier(.22, 1, .36, 1) both; }
+  .pl-lotus .pp1 { animation-delay: .05s; } .pl-lotus .pp2 { animation-delay: .15s; } .pl-lotus .pp3 { animation-delay: .3s; } .pl-lotus .pp4 { animation-delay: .4s; } .pl-lotus .pp5 { animation-delay: .55s; }
+  .pl-lotus .pl-core { transform-box: view-box; transform-origin: 50px 72px; animation: plBloom .6s .8s cubic-bezier(.22, 1, .36, 1) both; }
+  .pl-ring { fill: none; stroke: var(--accent, #7c4dff); stroke-opacity: .55; transform-box: view-box; transform-origin: 50px 82px; animation: plRipple 1.8s ease-out infinite; }
+  .pl-ring.r2 { animation-delay: .9s; }
+  .pl-word { font-weight: 800; font-size: 1.6rem; letter-spacing: -.6px; }
+  .pl-word span { color: var(--accent, #7c4dff); }
+  .pl-bar { width: 160px; height: 4px; border-radius: 4px; background: rgba(var(--accent-rgb, 124, 77, 255), .15); overflow: hidden; }
+  .pl-bar span { display: block; height: 100%; width: 40%; border-radius: 4px; background: linear-gradient(90deg, var(--accent, #7c4dff), var(--accent-2, #e04fd6)); animation: plSlide 1.1s ease-in-out infinite; }
+  .pl-msg { margin: 0; font-size: .8125rem; color: var(--faint, #6b6988); }
+  html.pl-quick .pl-bar, html.pl-quick .pl-msg { display: none; }
+  html.pl-quick .pl-lotus .pp, html.pl-quick .pl-lotus .pl-core { animation: none; }
+  html.pl-quick .preloader { transition-duration: .25s; }
+  @keyframes plBloom { from { transform: scale(0); opacity: 0; } }
+  @keyframes plRipple { from { transform: scale(.3); opacity: .9; } to { transform: scale(1.5); opacity: 0; } }
+  @keyframes plSlide { from { transform: translateX(-100%); } to { transform: translateX(260%); } }
+  @keyframes plFailsafe { to { opacity: 0; visibility: hidden; } }
+  @media (prefers-reduced-motion: reduce) { .pl-lotus .pp, .pl-lotus .pl-core, .pl-ring, .pl-bar span { animation: none; } }
+</style>
+</head>
+<body data-page="goals">
+<div class="preloader" id="preloader" role="status" aria-label="Loading BloomOS">
+  <div class="pl-inner">
+    <svg class="pl-lotus" viewBox="0 0 100 100" aria-hidden="true">
+      <defs><linearGradient id="plPetal" x1="0" y1="0" x2="0" y2="1"><stop offset="0" style="stop-color:#fbf8ff"/><stop offset=".55" style="stop-color:var(--accent,#7c4dff)"/><stop offset="1" style="stop-color:var(--accent-3,#12a8d8)"/></linearGradient></defs>
+      <ellipse class="pl-ring" cx="50" cy="82" rx="42" ry="9"/>
+      <ellipse class="pl-ring r2" cx="50" cy="82" rx="42" ry="9"/>
+      <g transform="rotate(-58 50 74) translate(50 74) scale(.78) translate(-50 -74)"><path class="pp pp1" d="M50 16 C 63 33, 63 58, 50 74 C 37 58, 37 33, 50 16Z" fill="url(#plPetal)" stroke="#fff" stroke-opacity=".7"/></g>
+      <g transform="rotate(58 50 74) translate(50 74) scale(.78) translate(-50 -74)"><path class="pp pp2" d="M50 16 C 63 33, 63 58, 50 74 C 37 58, 37 33, 50 16Z" fill="url(#plPetal)" stroke="#fff" stroke-opacity=".7"/></g>
+      <g transform="rotate(-30 50 74) translate(50 74) scale(.92) translate(-50 -74)"><path class="pp pp3" d="M50 16 C 63 33, 63 58, 50 74 C 37 58, 37 33, 50 16Z" fill="url(#plPetal)" stroke="#fff" stroke-opacity=".7"/></g>
+      <g transform="rotate(30 50 74) translate(50 74) scale(.92) translate(-50 -74)"><path class="pp pp4" d="M50 16 C 63 33, 63 58, 50 74 C 37 58, 37 33, 50 16Z" fill="url(#plPetal)" stroke="#fff" stroke-opacity=".7"/></g>
+      <path class="pp pp5" d="M50 16 C 63 33, 63 58, 50 74 C 37 58, 37 33, 50 16Z" fill="url(#plPetal)" stroke="#fff" stroke-opacity=".7"/>
+      <ellipse class="pl-core" cx="50" cy="72" rx="7" ry="6" fill="#ffe3a3"/>
+    </svg>
+    <div class="pl-word">Bloom<span>OS</span></div>
+    <div class="pl-bar" aria-hidden="true"><span></span></div>
+    <p class="pl-msg">Growing your garden…</p>
+  </div>
+</div>
+<a class="skip-link" href="#page">Skip to content</a>
+<div class="ambient" aria-hidden="true"></div><canvas id="water" aria-hidden="true"></canvas>
+<div class="layout">
+  <aside class="sidebar" id="sidebar" aria-label="Main navigation"></aside>
+  <main>
+    <header class="topbar" id="topbar"></header>
+    <div id="page" tabindex="-1">
+
+      <section class="page-head">
+        <div>
+          <div class="eyebrow">Milestones</div>
+          <h1>Your Learning <span class="grad-text">Goals</span></h1>
+          <p class="subtitle">Link a goal to a course and it tracks itself — or count steps manually for anything else.</p>
+        </div>
+        <span class="pill" id="goalSummary"></span>
+      </section>
+
+      <div class="goals-layout">
+        <section id="goalsMain" aria-label="Goals">
+          <div class="goal-list" id="goalList"></div>
+          <div id="doneWrap" hidden>
+            <h2 class="section-label">Achieved</h2>
+            <div class="goal-list" id="doneList"></div>
+          </div>
+        </section>
+
+        <aside class="panel" aria-labelledby="newGoalHeading">
+          <div class="panel-head"><h2 id="newGoalHeading"><i class="fas fa-plus"></i> Plant a new goal</h2></div>
+          <form class="goal-form" id="goalForm" novalidate>
+            <div class="field">
+              <label for="goalTitle">What do you want to achieve?</label>
+              <input class="input" id="goalTitle" maxlength="80" placeholder="e.g. Read 5 chapters of Eloquent JS" required>
+            </div>
+            <div class="field">
+              <label for="goalCourse">Link to a course</label>
+              <select class="input" id="goalCourse"></select>
+            </div>
+            <div class="row" id="manualFields">
+              <div class="field">
+                <label for="goalTarget">Target</label>
+                <input class="input" id="goalTarget" type="number" min="1" max="999" value="10" inputmode="numeric">
+              </div>
+              <div class="field">
+                <label for="goalUnit">Unit</label>
+                <input class="input" id="goalUnit" maxlength="20" placeholder="chapters">
+              </div>
+            </div>
+            <div class="field">
+              <label for="goalDue">Deadline <span style="color:var(--faint);font-weight:400">(optional)</span></label>
+              <input class="input" id="goalDue" type="date">
+            </div>
+            <button class="btn btn-primary" type="submit"><i class="fas fa-seedling"></i> Plant goal</button>
+          </form>
+        </aside>
+      </div>
+    </div>
+  </main>
+</div>
+<script src="assets/js/main.js"></script>
+</body>
+</html>
